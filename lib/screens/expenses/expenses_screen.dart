@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/expenses/new_transaction.dart';
 
 import '../../models/transaction_model.dart';
+import '../../widgets/expenses/chart.dart';
 import '../../widgets/expenses/transaction_list.dart';
 
 class ExpensesScreen extends StatefulWidget {
@@ -15,19 +16,28 @@ class ExpensesScreen extends StatefulWidget {
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
   final List<Transaction> transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'New Shoes',
-    //   amount: 69.99,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Weekly Groceries',
-    //   amount: 16.53,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Weekly Groceries',
+      amount: 16.53,
+      date: DateTime.now(),
+    ),
   ];
+  List<Transaction> get _recentTransactions {
+    return transactions.where(
+      (tx) {
+        return tx.date.isAfter(DateTime.now().subtract(
+          const Duration(days: 7),
+        ));
+      },
+    ).toList();
+  }
 
   void _addNewTransaction(String title, double amount) {
     Transaction newTransaction = Transaction(
@@ -71,14 +81,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                elevation: 5,
-                child: Text('Chart!'),
-              ),
-            ),
+            Chart(recentTransactions: _recentTransactions),
             TransactionList(
               transactions: transactions,
             ),
