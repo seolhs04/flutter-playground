@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/expense_model.dart';
+import 'package:flutter_app/widgets/expense/chart.dart';
 import 'package:flutter_app/widgets/expense/expense_list.dart';
 import 'package:flutter_app/widgets/expense/new_expense.dart';
 
@@ -64,6 +65,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     Widget mainContent = const Center(
       child: Text('No expensees found. Start adding some!'),
     );
@@ -85,9 +87,19 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [const Text('The chart'), Expanded(child: mainContent)],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: _registeredExpenses),
+                Expanded(child: mainContent)
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: mainContent)
+              ],
+            ),
     );
   }
 }
