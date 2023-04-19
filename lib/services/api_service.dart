@@ -26,14 +26,15 @@ class ApiService {
     }
   }
 
-  static Future<WebtoonDetailModel> getToonById(String id) async {
-    final url = Uri.parse('$baseUrl/$id');
+  static Future<WebtoonDetailModel> getToonById(String id,
+      [http.Client? client]) async {
+    client ??= http.Client();
+
     try {
-      final response = await http.get(url);
-      final webtoon = jsonDecode(response.body);
-      return WebtoonDetailModel.fromJson(webtoon);
+      final response = await client.get(Uri.parse('$baseUrl/$id'));
+      return WebtoonDetailModel.fromJson(jsonDecode(response.body));
     } catch (err) {
-      throw Error();
+      throw Exception();
     }
   }
 
