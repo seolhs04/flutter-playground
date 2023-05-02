@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/expense_model.dart';
-import 'package:flutter_app/widgets/expense/chart.dart';
-import 'package:flutter_app/widgets/expense/expense_list.dart';
-import 'package:flutter_app/widgets/expense/new_expense.dart';
+
+import '../models/expense_model.dart';
+import '../widgets/chart.dart';
+import '../widgets/expense_list.dart';
+import '../widgets/new_expense.dart';
 
 class ExpenseScreen extends StatefulWidget {
   const ExpenseScreen({super.key});

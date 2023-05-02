@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_app/models/webtoon_detail_model.dart';
-import 'package:flutter_app/services/api_service.dart';
+import 'package:flutter_app/apps/webtoon/models/webtoon_detail_model.dart';
+import 'package:flutter_app/apps/webtoon/services/api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
