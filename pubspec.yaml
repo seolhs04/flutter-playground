@@ -42,6 +42,7 @@ dependencies:
   uuid: ^3.0.7
   transparent_image: ^2.0.1
   flutter_riverpod: ^2.3.6
+  flutter_bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:

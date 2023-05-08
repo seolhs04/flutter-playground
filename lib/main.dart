@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/apps/mealsApp/providers/favorites_cubit.dart';
+import 'package:flutter_app/apps/mealsApp/providers/filter_cubit.dart';
+import 'package:flutter_app/apps/mealsApp/providers/meals_cubit.dart';
 import 'package:flutter_app/apps/mealsApp/screens/tabs_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
@@ -13,9 +16,7 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const ProviderScope(
-    child: App(),
-  ));
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -23,9 +24,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: const TabsScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => FilterCubit()),
+        BlocProvider(create: (context) => MealsCubit(context)),
+        BlocProvider(create: (context) => FavoriteCubit()),
+      ],
+      child: MaterialApp(
+        theme: theme,
+        home: const TabsScreen(),
+      ),
     );
   }
 }

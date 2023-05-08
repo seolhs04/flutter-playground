@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/apps/mealsApp/providers/favorites_provider.dart';
-import 'package:flutter_app/apps/mealsApp/providers/filters_provider.dart';
+import 'package:flutter_app/apps/mealsApp/models/meal.dart';
+import 'package:flutter_app/apps/mealsApp/providers/favorites_cubit.dart';
+import 'package:flutter_app/apps/mealsApp/providers/filter_cubit.dart';
+import 'package:flutter_app/apps/mealsApp/providers/meals_cubit.dart';
 import 'package:flutter_app/apps/mealsApp/screens/categories_screen.dart';
 import 'package:flutter_app/apps/mealsApp/screens/filters_screen.dart';
 import 'package:flutter_app/apps/mealsApp/screens/meals_screen.dart';
 import 'package:flutter_app/apps/mealsApp/widgets/main_drawer.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TabsScreen extends ConsumerStatefulWidget {
+class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  ConsumerState<TabsScreen> createState() {
+  State<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends ConsumerState<TabsScreen> {
+class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -36,17 +38,14 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = ref.watch(filteredMealsProvider);
-
     String activePageTitle = 'Pick your category';
-    Widget activePage = CategoriesScreen(
-      availableMeals: availableMeals,
+    Widget activePage = BlocBuilder<MealsCubit, List<Meal>>(
+      builder: (context, meals) => CategoriesScreen(availableMeals: meals),
     );
 
     if (_selectedPageIndex == 1) {
-      final favoriteMeals = ref.watch(favoriteMealsProvider);
-      activePage = MealsScreen(
-        meals: favoriteMeals,
+      activePage = BlocBuilder<FavoriteCubit, List<Meal>>(
+        builder: (context, meals) => MealsScreen(meals: meals),
       );
       activePageTitle = 'Favorites';
     }
