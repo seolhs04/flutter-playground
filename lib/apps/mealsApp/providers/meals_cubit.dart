@@ -6,9 +6,7 @@ import '../models/meal.dart';
 
 class MealsCubit extends Cubit<List<Meal>> {
   MealsCubit(context) : super(dummyMeals) {
-    BlocProvider.of<FilterCubit>(context).stream.listen((filter) {
-      setFilteredMeals(filter);
-    });
+    BlocProvider.of<FilterCubit>(context).stream.listen(setFilteredMeals);
   }
 
   void setFilteredMeals(Map<Filter, bool> activeFilter) {
