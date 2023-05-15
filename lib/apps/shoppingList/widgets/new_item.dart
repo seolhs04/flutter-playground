@@ -2,9 +2,14 @@ import 'package:flutter_app/apps/shoppingList/data/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/apps/shoppingList/models/category_model.dart';
 import 'package:flutter_app/apps/shoppingList/models/grocery_item_model.dart';
+import 'package:flutter_app/apps/shoppingList/services/shopping_list_service.dart';
 
 class NewItem extends StatefulWidget {
-  const NewItem({super.key});
+  final void Function() addItem;
+  const NewItem({
+    super.key,
+    required this.addItem,
+  });
 
   @override
   State<NewItem> createState() {
@@ -17,18 +22,26 @@ class _NewItemState extends State<NewItem> {
   var _enteredName = '';
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
+  var _isSending = false;
 
-  void _setItem() {
+  void _setItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Navigator.of(context).pop(
-        GroceryItem(
-          id: DateTime.now().toString(),
-          name: _enteredName,
-          quantity: _enteredQuantity,
-          category: _selectedCategory,
-        ),
-      );
+      setState(() {
+        _isSending = true;
+      });
+
+      final response = await ShoppingListService.addItem(GroceryItem(
+        id: '',
+        name: _enteredName,
+        quantity: _enteredQuantity,
+        category: _selectedCategory,
+      ));
+      if (response) {
+        if (!context.mounted) return;
+        widget.addItem();
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -119,14 +132,22 @@ class _NewItemState extends State<NewItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      _formKey.currentState!.reset();
-                    },
+                    onPressed: _isSending
+                        ? null
+                        : () {
+                            _formKey.currentState!.reset();
+                          },
                     child: const Text('Reset'),
                   ),
                   ElevatedButton(
-                    onPressed: _setItem,
-                    child: const Text('Add Item'),
+                    onPressed: _isSending ? null : _setItem,
+                    child: _isSending
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Add Item'),
                   )
                 ],
               ),

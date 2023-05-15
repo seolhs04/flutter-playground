@@ -19,7 +19,7 @@ class ShoppingListApp extends StatelessWidget {
             theme: ThemeData(),
             darkTheme: ThemeData.dark(),
             themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            home: const GroceryList(),
+            home: GroceryList(),
           );
         },
       ),
