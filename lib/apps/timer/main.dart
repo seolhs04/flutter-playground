@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/apps/timer/screens/timer_screen.dart';
+import 'package:flutter_app/apps/timer/screens/button_screen.dart';
 
-class App extends StatelessWidget {
-  const App({super.key});
+class TimerApp extends StatelessWidget {
+  const TimerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: const Color(0xFFE7626C),
-          ),
-          textTheme: const TextTheme(
-            displayLarge: TextStyle(
-              color: Color(0xFF232B55),
-            ),
-          ),
-          cardColor: const Color(0xFFF4EDDB),
-        ),
-        home: const TimerScreen());
+        theme: ThemeData(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
+        themeMode: ThemeMode.dark,
+        home: const ButtonScreen());
   }
 }

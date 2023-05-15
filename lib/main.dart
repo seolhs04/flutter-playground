@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/apps/shoppingList/main.dart';
+import 'package:flutter_app/apps/timer/main.dart';
 
 void main() {
-  runApp(const ShoppingListApp());
+  runApp(const TimerApp());
 }
