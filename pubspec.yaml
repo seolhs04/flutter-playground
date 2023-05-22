@@ -43,8 +43,10 @@ dependencies:
   transparent_image: ^2.0.1
   flutter_riverpod: ^2.3.6
   flutter_bloc: ^8.1.2
-  flutter_dotenv: ^5.0.2
   image_picker: ^0.8.7+5
+  location: ^4.4.0
+  google_maps_flutter: ^2.2.6
+  flutter_config: ^2.0.0
 
 dev_dependencies:
   flutter_test:

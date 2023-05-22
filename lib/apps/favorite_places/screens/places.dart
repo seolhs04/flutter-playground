@@ -25,7 +25,10 @@ class PlacesScreen extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<UserPlacesCubit, List<Place>>(
-        builder: (context, places) => PlacesList(places: places),
+        builder: (context, places) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PlacesList(places: places),
+        ),
       ),
     );
   }

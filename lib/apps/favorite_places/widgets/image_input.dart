@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput({super.key});
+  const ImageInput({
+    super.key,
+    required this.onPickImage,
+  });
+
+  final void Function(File image) onPickImage;
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -15,16 +20,32 @@ class _ImageInputState extends State<ImageInput> {
 
   void _takePicture() async {
     final imagePicker = ImagePicker();
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery, maxWidth: 600);
-
-    if (pickedImage == null) {
-      return;
+    late XFile? pickedImage;
+    try {
+      pickedImage = await imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 600,
+      );
+      if (pickedImage == null) {
+        return;
+      }
+      setState(() {
+        _selectedImage = File(pickedImage!.path);
+      });
+      widget.onPickImage(_selectedImage!);
+    } catch (err) {
+      showDialog(
+        context: context,
+        builder: (ctx) => Dialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: const Text('You can not use this image'),
+          ),
+        ),
+      );
     }
-
-    setState(() {
-      _selectedImage = File(pickedImage.path);
-    });
   }
 
   @override

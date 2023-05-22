@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 
 import '../data/categories.dart';
 import '../models/grocery_item_model.dart';
 
-String? baseUrl = dotenv.env['FIREBASE_URL'];
+String? baseUrl = FlutterConfig.get('FIREBASE_URL');
 
 class ShoppingListService {
   static Future<bool> addItem(GroceryItem item) async {
