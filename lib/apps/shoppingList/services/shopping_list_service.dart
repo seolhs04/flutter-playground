@@ -1,27 +1,25 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/apps/shoppingList/data/categories.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
-import '../data/categories.dart';
 import '../models/grocery_item_model.dart';
+
+const uuid = Uuid();
 
 String? baseUrl = FlutterConfig.get('FIREBASE_URL');
 
 class ShoppingListService {
+  static final shoppingListTable =
+      FirebaseFirestore.instance.collection("shopping_list");
+
   static Future<bool> addItem(GroceryItem item) async {
     try {
-      final url = Uri.parse('$baseUrl/shopping-list.json');
-      await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(
-          {
-            'name': item.name,
-            'quantity': item.quantity,
-            'category': item.category.title,
-          },
-        ),
-      );
+      await shoppingListTable.add({
+        'name': item.name,
+        'quantity': item.quantity,
+        'category': item.category.title,
+      });
       return true;
     } catch (err) {
       throw Exception('');
@@ -30,20 +28,19 @@ class ShoppingListService {
 
   static Future<List<GroceryItem>> getItems() async {
     try {
-      final url = Uri.parse('$baseUrl/shopping-list.json');
-      final response = await http.get(url);
-      if (response.body == 'null') return [];
-      List<GroceryItem> itemInstances = [];
-      final Map<String, dynamic> listData = json.decode(response.body);
-      for (final item in listData.entries) {
+      final responseData = await shoppingListTable.get();
+      final List<GroceryItem> itemInstances = [];
+      for (final item in responseData.docs) {
+        final groceryData = item.data();
         final category = categories.entries
             .firstWhere(
-                (catItem) => catItem.value.title == item.value['category'])
+                (catItem) => catItem.value.title == groceryData['category'])
             .value;
+
         itemInstances.add(GroceryItem(
-          id: item.key,
-          name: item.value['name'],
-          quantity: item.value['quantity'],
+          id: item.id,
+          name: groceryData['name'],
+          quantity: groceryData['quantity'],
           category: category,
         ));
       }
@@ -55,8 +52,7 @@ class ShoppingListService {
 
   static Future<bool> removeItem(String id) async {
     try {
-      final url = Uri.parse('$baseUrl/shopping-list/$id.json');
-      await http.delete(url);
+      shoppingListTable.doc(id).delete();
       return true;
     } catch (err) {
       throw Exception();
