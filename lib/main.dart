@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/apps/shoppingList/main.dart';
+import 'package:flutter_app/apps/chatApp/main.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -9,5 +9,5 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const ShoppingListApp());
+  runApp(const ChatApp());
 }
