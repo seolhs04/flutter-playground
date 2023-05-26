@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/apps/chatApp/screens/auth_screen.dart';
 import 'package:flutter_app/apps/chatApp/screens/chat_screen.dart';
-import 'package:flutter_app/apps/chatApp/screens/splash_screen%20copy.dart';
+import 'package:flutter_app/apps/chatApp/screens/splash_screen.dart';
 
 class ChatApp extends StatelessWidget {
   const ChatApp({super.key});

@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
-    if (!isValid || _isLogin && _selectedImage == null) return;
+    if (!isValid || (!_isLogin && _selectedImage == null)) return;
 
     _formKey.currentState!.save();
     setState(() {
@@ -34,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     try {
       if (_isLogin) {
-        await AuthService.signIn(_enteredEmail, _enteredPassword);
+        final dd = await AuthService.signIn(_enteredEmail, _enteredPassword);
       } else {
         final UserCredential userCredentials =
             await AuthService.createUser(_enteredEmail, _enteredPassword);

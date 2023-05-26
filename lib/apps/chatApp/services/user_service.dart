@@ -15,4 +15,8 @@ class UserService {
       'image_url': imageUrl,
     });
   }
+
+  static getUserDataById(String id) async {
+    return await userTable.doc(id).get();
+  }
 }
