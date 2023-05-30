@@ -34,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     try {
       if (_isLogin) {
-        final dd = await AuthService.signIn(_enteredEmail, _enteredPassword);
+        await AuthService.signIn(_enteredEmail, _enteredPassword);
       } else {
         final UserCredential userCredentials =
             await AuthService.createUser(_enteredEmail, _enteredPassword);
